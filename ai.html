@@ -17,107 +17,99 @@
 
 <header>
 
-<h1>🇬🇭 Ghana Connect AI</h1>
+<h1>🤖 Ghana Connect AI</h1>
 
-<p>Your assistant for Ghana solutions</p>
+<p>Your Ghana solutions assistant</p>
 
 </header>
+
 
 
 
 <div class="form">
 
 
-<input id="question" placeholder="Ask anything...">
+<input 
+id="question"
+placeholder="Ask Ghana Connect AI anything..."
+>
 
 
 <button onclick="askAI()">
+
 Ask AI
+
 </button>
+
 
 
 <div class="card">
 
 <p id="answer">
-AI response will appear here
+AI is ready to help.
 </p>
 
-</div>
-
 
 </div>
 
 
+</div>
 
 
-<script>
 
 
-function askAI(){
+
+<script type="module">
+
+
+import { askGhanaAI } from "./ai.js";
+
+
+
+window.askAI = async function(){
 
 
 let question =
-document.getElementById("question").value.toLowerCase();
+document.getElementById("question").value;
 
 
 
 let answer =
-"";
+document.getElementById("answer");
 
 
-if(question.includes("job")){
+
+answer.innerHTML =
+"Thinking... 🤖";
 
 
-answer =
-"You can find jobs on Ghana Connect. Check the Jobs section and search by region.";
+
+try{
 
 
-}
+let response =
+await askGhanaAI(question);
 
 
-else if(question.includes("farm")){
 
-
-answer =
-"Farmers can connect with buyers, suppliers and farming services through Ghana Connect.";
-
-
-}
-
-
-else if(question.includes("business")){
-
-
-answer =
-"Businesses can create listings, verify their profile and promote their services.";
+answer.innerHTML =
+response;
 
 
 }
 
 
-else if(question.includes("school") || question.includes("education")){
+catch(error){
 
 
-answer =
-"Students can find learning resources and education opportunities.";
+answer.innerHTML =
+"AI connection error. Check Firebase AI settings.";
 
 
-}
-
-
-else{
-
-
-answer =
-"I am Ghana Connect AI. I can help you find jobs, services, businesses and opportunities in Ghana.";
+console.log(error);
 
 
 }
-
-
-
-document.getElementById("answer").innerHTML =
-answer;
 
 
 }
@@ -125,6 +117,8 @@ answer;
 
 
 </script>
+
+
 
 
 </body>

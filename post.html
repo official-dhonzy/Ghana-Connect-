@@ -14,6 +14,7 @@
 
 <body>
 
+
 <header>
 
 <h1>🇬🇭 Ghana Connect</h1>
@@ -24,7 +25,9 @@
 
 
 
+
 <div class="form">
+
 
 
 <select id="type">
@@ -43,38 +46,65 @@
 
 
 
+
 <input id="title" placeholder="Title">
+
 
 
 <input id="phone" placeholder="Phone number (WhatsApp)">
 
 
-<textarea id="description" placeholder="Description"></textarea>
+
+<textarea 
+id="description"
+placeholder="Description">
+</textarea>
+
 
 
 
 <select id="location">
 
-<option value="">Select Ghana Region</option>
+<option value="">
+Select Ghana Region
+</option>
+
 
 <option>Greater Accra</option>
+
 <option>Ashanti</option>
+
 <option>Western</option>
+
 <option>Central</option>
+
 <option>Eastern</option>
+
 <option>Volta</option>
+
 <option>Northern</option>
+
 <option>Upper East</option>
+
 <option>Upper West</option>
+
 <option>Bono</option>
+
 <option>Bono East</option>
+
 <option>Ahafo</option>
+
 <option>Savannah</option>
+
 <option>North East</option>
+
 <option>Oti</option>
+
 <option>Western North</option>
 
+
 </select>
+
 
 
 
@@ -85,10 +115,13 @@ Post Now
 </button>
 
 
+
 <p id="message"></p>
 
 
+
 </div>
+
 
 
 
@@ -110,7 +143,10 @@ addDoc
 
 
 
+
+
 window.createPost = async function(){
+
 
 
 let user = auth.currentUser;
@@ -133,6 +169,62 @@ return;
 
 
 
+let type =
+
+document.getElementById("type").value;
+
+
+
+let title =
+
+document.getElementById("title").value;
+
+
+
+let phone =
+
+document.getElementById("phone").value;
+
+
+
+let description =
+
+document.getElementById("description").value;
+
+
+
+let location =
+
+document.getElementById("location").value;
+
+
+
+
+
+
+if(
+title==="" ||
+description==="" ||
+location===""
+){
+
+
+document.getElementById("message").innerHTML =
+
+"Please fill all required fields";
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
 try{
 
 
@@ -143,31 +235,32 @@ collection(db,"posts"),
 {
 
 
-type:
-document.getElementById("type").value,
+type:type,
 
 
-title:
-document.getElementById("title").value,
+title:title,
 
 
-phone:
-document.getElementById("phone").value,
+phone:phone,
 
 
-description:
-document.getElementById("description").value,
+description:description,
 
 
-location:
-document.getElementById("location").value,
+location:location,
 
 
-owner:
-user.uid,
+
+// This connects the seller to chat
+
+userId:user.uid,
+
 
 
 featured:false,
+
+
+verified:false,
 
 
 date:new Date()
@@ -180,15 +273,32 @@ date:new Date()
 
 
 
+
+
 document.getElementById("message").innerHTML =
 
 "Post created successfully ✅";
 
 
+
+
+
+document.getElementById("title").value="";
+
+document.getElementById("phone").value="";
+
+document.getElementById("description").value="";
+
+document.getElementById("location").value="";
+
+
+
 }
 
 
+
 catch(error){
+
 
 
 document.getElementById("message").innerHTML =
@@ -196,15 +306,19 @@ document.getElementById("message").innerHTML =
 error.message;
 
 
+
+}
+
+
+
 }
 
 
-
-}
 
 
 
 </script>
+
 
 
 </body>

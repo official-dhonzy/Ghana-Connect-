@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ghana Connect Login</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+<h1>🇬🇭 Ghana Connect</h1>
+<p>Login to your account</p>
+</header>
+
+
+
+<div class="form">
+
+<input id="email" placeholder="Email">
+
+<input id="password" type="password" placeholder="Password">
+
+
+<button onclick="login()">
+Login
+</button>
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+
+<script type="module">
+
+import { auth } from "./firebase.js";
+
+
+import {
+signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+
+window.login = async function(){
+
+
+let email =
+document.getElementById("email").value;
+
+
+let password =
+document.getElementById("password").value;
+
+
+
+try{
+
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+
+
+document.getElementById("message").innerHTML =
+"Login successful ✅";
+
+
+window.location.href="index.html";
+
+
+}
+
+
+catch(error){
+
+
+document.getElementById("message").innerHTML =
+error.message;
+
+
+}
+
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

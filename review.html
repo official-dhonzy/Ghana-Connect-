@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reviews - Ghana Connect</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>⭐ Ghana Connect Reviews</h1>
+
+</header>
+
+
+
+<div class="form">
+
+
+<select id="rating">
+
+<option value="5">⭐⭐⭐⭐⭐ 5</option>
+
+<option value="4">⭐⭐⭐⭐ 4</option>
+
+<option value="3">⭐⭐⭐ 3</option>
+
+<option value="2">⭐⭐ 2</option>
+
+<option value="1">⭐ 1</option>
+
+</select>
+
+
+
+<textarea id="comment" placeholder="Write your review"></textarea>
+
+
+<button onclick="addReview()">
+
+Submit Review
+
+</button>
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+
+<script type="module">
+
+
+import {db, auth} from "./firebase.js";
+
+
+import {
+
+collection,
+
+addDoc
+
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+window.addReview = async function(){
+
+
+let user = auth.currentUser;
+
+
+if(!user){
+
+document.getElementById("message").innerHTML =
+"Login first";
+
+return;
+
+}
+
+
+
+await addDoc(
+
+collection(db,"reviews"),
+
+{
+
+
+userId:user.uid,
+
+
+rating:
+document.getElementById("rating").value,
+
+
+comment:
+document.getElementById("comment").value,
+
+
+date:new Date()
+
+
+}
+
+);
+
+
+
+document.getElementById("message").innerHTML =
+"Review added ✅";
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

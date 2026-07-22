@@ -14,25 +14,54 @@
 
 <body>
 
+
 <header>
+
 <h1>🇬🇭 Ghana Connect</h1>
+
 <p>Your Profile</p>
+
 </header>
+
+
 
 
 <div class="form">
 
-<h2 id="name">Loading...</h2>
+
+<h2 id="name">
+Loading...
+</h2>
+
 
 <p id="email"></p>
 
+<p id="phone"></p>
+
+<p id="region"></p>
+
+<p id="job"></p>
+
+
 
 <button onclick="logout()">
+
 Logout
+
 </button>
 
 
 </div>
+
+
+
+
+<h2>My Listings</h2>
+
+
+<div id="posts"></div>
+
+
 
 
 
@@ -43,43 +72,90 @@ import { auth, db } from "./firebase.js";
 
 
 import {
+
 onAuthStateChanged,
+
 signOut
+
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 
 import {
+
 doc,
-getDoc
+
+getDoc,
+
+collection,
+
+query,
+
+where,
+
+getDocs
+
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
 
 
 
 onAuthStateChanged(auth, async(user)=>{
 
 
+
 if(user){
 
 
-const userDoc =
-await getDoc(doc(db,"users",user.uid));
+
+let userDoc = await getDoc(
+
+doc(db,"users",user.uid)
+
+);
+
 
 
 if(userDoc.exists()){
 
 
-document.getElementById("name").innerHTML =
-userDoc.data().name;
 
+let data = userDoc.data();
+
+
+
+document.getElementById("name").innerHTML =
+data.name || "";
 
 document.getElementById("email").innerHTML =
-userDoc.data().email;
+"📧 " + (data.email || "");
+
+document.getElementById("phone").innerHTML =
+"📞 " + (data.phone || "");
+
+document.getElementById("region").innerHTML =
+"📍 " + (data.region || "");
+
+document.getElementById("job").innerHTML =
+"💼 " + (data.job || "");
+
 
 
 }
 
 
-}else{
+
+
+loadPosts(user.uid);
+
+
+
+}
+
+
+
+else{
 
 
 window.location.href="login.html";
@@ -93,11 +169,86 @@ window.location.href="login.html";
 
 
 
-window.logout = function(){
+
+
+
+async function loadPosts(uid){
+
+
+
+let q = query(
+
+collection(db,"posts"),
+
+where("userId","==",uid)
+
+);
+
+
+
+let snapshot = await getDocs(q);
+
+
+
+let box =
+document.getElementById("posts");
+
+
+
+box.innerHTML="";
+
+
+
+snapshot.forEach((doc)=>{
+
+
+
+let post = doc.data();
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<h3>${post.title}</h3>
+
+
+<p>${post.description}</p>
+
+
+<p>📍 ${post.location}</p>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+window.logout=function(){
+
 
 signOut(auth);
 
+
 window.location.href="index.html";
+
 
 }
 

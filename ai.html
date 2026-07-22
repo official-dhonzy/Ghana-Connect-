@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ghana Connect AI</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🇬🇭 Ghana Connect AI</h1>
+
+<p>Your assistant for Ghana solutions</p>
+
+</header>
+
+
+
+<div class="form">
+
+
+<input id="question" placeholder="Ask anything...">
+
+
+<button onclick="askAI()">
+Ask AI
+</button>
+
+
+<div class="card">
+
+<p id="answer">
+AI response will appear here
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+<script>
+
+
+function askAI(){
+
+
+let question =
+document.getElementById("question").value.toLowerCase();
+
+
+
+let answer =
+"";
+
+
+if(question.includes("job")){
+
+
+answer =
+"You can find jobs on Ghana Connect. Check the Jobs section and search by region.";
+
+
+}
+
+
+else if(question.includes("farm")){
+
+
+answer =
+"Farmers can connect with buyers, suppliers and farming services through Ghana Connect.";
+
+
+}
+
+
+else if(question.includes("business")){
+
+
+answer =
+"Businesses can create listings, verify their profile and promote their services.";
+
+
+}
+
+
+else if(question.includes("school") || question.includes("education")){
+
+
+answer =
+"Students can find learning resources and education opportunities.";
+
+
+}
+
+
+else{
+
+
+answer =
+"I am Ghana Connect AI. I can help you find jobs, services, businesses and opportunities in Ghana.";
+
+
+}
+
+
+
+document.getElementById("answer").innerHTML =
+answer;
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

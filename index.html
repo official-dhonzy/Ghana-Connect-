@@ -1,86 +1,265 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Ghana Connect</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
+
 <header>
+
 <h1>🇬🇭 Ghana Connect</h1>
-<p>Connecting Ghanaians to opportunities and solutions</p>
+
+<p>
+Connecting Ghanaians to opportunities and solutions
+</p>
+
 </header>
 
 
-<div class="search-box">
-<input id="search" placeholder="Search jobs, services, houses...">
-<button onclick="search()">🔍</button>
+
+<div class="account-buttons">
+
+<a href="register.html">
+<button>
+Create Account
+</button>
+</a>
+
+
+<a href="login.html">
+<button>
+Login
+</button>
+</a>
+
 </div>
+
+
+
+
+<div class="search-box">
+
+<input 
+id="search"
+placeholder="Search jobs, services, houses..."
+>
+
+
+<button onclick="search()">
+🔍
+</button>
+
+</div>
+
+
 
 
 <h2>Explore</h2>
 
 
+
 <div class="container">
 
-<div class="card" onclick="go('jobs')">
+
+
+<div class="card" onclick="go('posts.html')">
+
 💼
+
 <h3>Jobs</h3>
+
 <p>Find work and opportunities</p>
+
 </div>
 
 
-<div class="card" onclick="go('services')">
+
+<div class="card" onclick="go('posts.html')">
+
 🔧
+
 <h3>Services</h3>
+
 <p>Find trusted workers</p>
+
 </div>
 
 
-<div class="card" onclick="go('housing')">
+
+
+<div class="card" onclick="go('posts.html')">
+
 🏠
+
 <h3>Housing</h3>
+
 <p>Find rooms and houses</p>
+
 </div>
 
 
-<div class="card" onclick="go('farming')">
+
+
+<div class="card" onclick="go('posts.html')">
+
 🌱
+
 <h3>Farming</h3>
+
 <p>Connect farmers and buyers</p>
+
 </div>
 
 
-<div class="card" onclick="go('education')">
+
+
+<div class="card" onclick="go('posts.html')">
+
 📚
+
 <h3>Education</h3>
+
 <p>Learn and study</p>
+
 </div>
 
 
-<div class="card" onclick="go('marketplace')">
+
+
+<div class="card" onclick="go('posts.html')">
+
 🛒
+
 <h3>Marketplace</h3>
+
 <p>Buy and sell</p>
-</div>
 
 </div>
+
+
+
+</div>
+
+
+
+
+
+<h2>🇬🇭 Ghana Regions</h2>
+
+
+<div class="card">
+
+<p>
+Greater Accra • Ashanti • Volta • Eastern • Central
+</p>
+
+<p>
+Western • Northern • Bono • Oti • Upper East • Upper West
+</p>
+
+</div>
+
+
+
+
+
+<h2>⭐ Featured Businesses</h2>
+
+
+<div class="card">
+
+<p>
+Trusted businesses and services will appear here.
+</p>
+
+
+<a href="verify.html">
+
+<button>
+Verify Business
+</button>
+
+</a>
+
+</div>
+
+
+
 
 
 
 <nav>
 
-<button>🏠 Home</button>
-<button>➕ Post</button>
-<button>💬 Messages</button>
-<button>👤 Profile</button>
+
+<button onclick="go('index.html')">
+🏠 Home
+</button>
+
+
+<button onclick="go('post.html')">
+➕ Post
+</button>
+
+
+<button onclick="go('chat.html')">
+💬 Messages
+</button>
+
+
+<button onclick="go('profile.html')">
+👤 Profile
+</button>
+
 
 </nav>
 
 
-<script src="app.js"></script>
+
+
+
+<script>
+
+
+function go(page){
+
+window.location.href = page;
+
+}
+
+
+
+function search(){
+
+let text =
+document.getElementById("search").value;
+
+
+if(text){
+
+window.location.href =
+"posts.html?search=" + text;
+
+}
+
+
+}
+
+
+
+</script>
+
+
 
 </body>
+
 </html>

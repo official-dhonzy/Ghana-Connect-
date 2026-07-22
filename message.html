@@ -17,7 +17,7 @@
 
 <header>
 
-<h1>💬 Chat</h1>
+<h1>💬 Ghana Connect Chat</h1>
 
 </header>
 
@@ -28,7 +28,6 @@
 
 
 <div class="form">
-
 
 <input 
 id="message"
@@ -80,7 +79,15 @@ new URLSearchParams(window.location.search)
 
 
 
+let receiverId =
+
+new URLSearchParams(window.location.search)
+.get("receiverId");
+
+
+
 let box =
+
 document.getElementById("messages");
 
 
@@ -88,6 +95,7 @@ document.getElementById("messages");
 
 
 function loadMessages(){
+
 
 
 let q = query(
@@ -109,7 +117,7 @@ box.innerHTML="";
 
 
 
-snapshot.forEach(doc=>{
+snapshot.forEach((doc)=>{
 
 
 let msg = doc.data();
@@ -122,7 +130,11 @@ box.innerHTML += `
 <div class="card">
 
 
-<p>${msg.text}</p>
+<p>
+
+${msg.text}
+
+</p>
 
 
 <small>
@@ -136,7 +148,6 @@ ${msg.sender}
 
 
 `;
-
 
 
 });
@@ -154,8 +165,8 @@ ${msg.sender}
 window.sendMessage = async function(){
 
 
-let user =
-auth.currentUser;
+
+let user = auth.currentUser;
 
 
 
@@ -169,10 +180,16 @@ return;
 
 
 
+
+let input =
+
+document.getElementById("message");
+
+
+
 let text =
 
-document.getElementById("message")
-.value;
+input.value.trim();
 
 
 
@@ -181,6 +198,7 @@ if(text===""){
 return;
 
 }
+
 
 
 
@@ -206,11 +224,44 @@ date:new Date()
 
 
 
-document.getElementById("message")
-.value="";
+
+
+// Create notification
+
+if(receiverId){
+
+
+await addDoc(
+
+collection(db,"notifications"),
+
+{
+
+
+userId:receiverId,
+
+message:"You received a new message 💬",
+
+date:new Date()
 
 
 }
+
+);
+
+
+}
+
+
+
+
+
+input.value="";
+
+
+
+}
+
 
 
 

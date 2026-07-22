@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Register - Ghana Connect</title>
+<title>Create Account - Ghana Connect</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -19,69 +19,125 @@
 
 <h1>🇬🇭 Ghana Connect</h1>
 
-<p>Create Account</p>
+<p>Create your account</p>
 
 </header>
+
 
 
 
 <div class="form">
 
 
-<input id="name" placeholder="Full name">
+<input 
+id="name"
+placeholder="Full Name"
+>
 
 
-<input id="email" placeholder="Email">
+
+<input 
+id="email"
+type="email"
+placeholder="Email"
+>
 
 
-<input id="password" type="password" placeholder="Password">
 
 
-<input id="phone" placeholder="Phone number">
+<input 
+id="password"
+type="password"
+placeholder="Password"
+>
+
+
+
+
+<input 
+id="phone"
+placeholder="Phone Number"
+>
+
+
 
 
 <select id="region">
 
-<option>Choose Region</option>
+
+<option value="">
+Choose Region
+</option>
+
+
 <option>Greater Accra</option>
+
 <option>Ashanti</option>
+
 <option>Western</option>
+
 <option>Central</option>
+
 <option>Eastern</option>
+
 <option>Volta</option>
+
 <option>Northern</option>
+
 <option>Upper East</option>
+
 <option>Upper West</option>
+
 <option>Bono</option>
+
 <option>Bono East</option>
+
 <option>Ahafo</option>
+
 <option>Savannah</option>
+
 <option>North East</option>
+
 <option>Oti</option>
+
 <option>Western North</option>
+
 
 </select>
 
 
-<input id="skills" placeholder="Skills or Business">
 
 
-<button onclick="register()">
+<input 
+id="job"
+placeholder="Occupation / Skill"
+>
+
+
+
+
+<button onclick="createAccount()">
+
 Create Account
+
 </button>
 
 
+
 <p id="message"></p>
+
 
 
 </div>
 
 
 
+
+
 <script type="module">
 
 
-import {auth,db} from "./firebase.js";
+import { auth, db } from "./firebase.js";
 
 
 import {
@@ -102,66 +158,109 @@ setDoc
 
 
 
-window.register = async function(){
+
+window.createAccount = async function(){
+
+
+let name =
+document.getElementById("name").value;
+
+
+let email =
+document.getElementById("email").value;
+
+
+let password =
+document.getElementById("password").value;
+
+
+let phone =
+document.getElementById("phone").value;
+
+
+let region =
+document.getElementById("region").value;
+
+
+let job =
+document.getElementById("job").value;
+
+
 
 
 try{
 
 
-const user = await createUserWithEmailAndPassword(
+let userCredential =
+
+await createUserWithEmailAndPassword(
 
 auth,
 
-email.value,
+email,
 
-password.value
+password
 
 );
+
+
+
+let user =
+userCredential.user;
+
 
 
 
 await setDoc(
 
-doc(db,"users",user.user.uid),
+doc(db,"users",user.uid),
 
 {
 
 
-name:name.value,
+name:name,
 
-email:email.value,
+email:email,
 
-phone:phone.value,
+phone:phone,
 
-region:region.value,
+region:region,
 
-skills:skills.value,
+job:job,
 
-
-created:new Date()
+createdAt:new Date()
 
 
 }
+
 
 );
 
 
 
-message.innerHTML =
-"Account created ✅";
+document.getElementById("message").innerHTML =
+
+"Account created successfully ✅";
+
+
+window.location.href="profile.html";
+
 
 
 }
+
 
 
 catch(error){
 
 
-message.innerHTML =
+document.getElementById("message").innerHTML =
+
 error.message;
 
 
 }
+
 
 
 }

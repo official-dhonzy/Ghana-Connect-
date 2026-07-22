@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Promote - Ghana Connect</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🇬🇭 Ghana Connect</h1>
+
+<p>Promote your business</p>
+
+</header>
+
+
+
+<div class="form">
+
+
+<h2>⭐ Featured Listing</h2>
+
+
+<p>
+Make your business, service or product appear higher in Ghana Connect.
+</p>
+
+
+<select id="plan">
+
+<option value="Basic">
+Basic - GH₵20
+</option>
+
+
+<option value="Premium">
+Premium - GH₵50
+</option>
+
+
+<option value="Business">
+Business - GH₵100
+</option>
+
+</select>
+
+
+
+<input id="phone" placeholder="Mobile Money Number">
+
+
+<button onclick="requestPromotion()">
+
+Request Promotion
+
+</button>
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+
+<script>
+
+
+function requestPromotion(){
+
+
+let plan =
+document.getElementById("plan").value;
+
+
+let phone =
+document.getElementById("phone").value;
+
+
+
+document.getElementById("message").innerHTML =
+
+"Promotion request received. We will contact you about " 
++ plan
++ " payment.";
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

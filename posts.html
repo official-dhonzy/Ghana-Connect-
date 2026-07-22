@@ -19,7 +19,7 @@
 
 <h1>🇬🇭 Ghana Connect</h1>
 
-<p>Find opportunities and solutions</p>
+<p>Find opportunities near you</p>
 
 </header>
 
@@ -27,7 +27,50 @@
 
 <div class="search-box">
 
-<input id="search" placeholder="Search jobs, services, houses..." onkeyup="searchPosts()">
+<input id="search" placeholder="Search..." onkeyup="filterPosts()">
+
+
+<select id="category" onchange="filterPosts()">
+
+<option value="">All Categories</option>
+
+<option>Jobs</option>
+
+<option>Services</option>
+
+<option>Housing</option>
+
+<option>Farming</option>
+
+<option>Marketplace</option>
+
+</select>
+
+
+
+<select id="region" onchange="filterPosts()">
+
+<option value="">All Regions</option>
+
+<option>Greater Accra</option>
+<option>Ashanti</option>
+<option>Western</option>
+<option>Central</option>
+<option>Eastern</option>
+<option>Volta</option>
+<option>Northern</option>
+<option>Upper East</option>
+<option>Upper West</option>
+<option>Bono</option>
+<option>Bono East</option>
+<option>Ahafo</option>
+<option>Savannah</option>
+<option>North East</option>
+<option>Oti</option>
+<option>Western North</option>
+
+</select>
+
 
 </div>
 
@@ -40,34 +83,36 @@
 <script type="module">
 
 
-import { db } from "./firebase.js";
+import {db} from "./firebase.js";
 
 
 import {
+
 collection,
+
 getDocs
+
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
 
-let allPosts = [];
+let allPosts=[];
 
 
 
 async function loadPosts(){
 
 
-const snapshot =
+let snapshot =
 await getDocs(collection(db,"posts"));
 
 
 
-allPosts=[];
-
-
 snapshot.forEach((doc)=>{
 
+
 allPosts.push(doc.data());
+
 
 });
 
@@ -80,21 +125,22 @@ displayPosts(allPosts);
 
 
 
+
 function displayPosts(posts){
 
 
-const container =
+let box =
 document.getElementById("posts");
 
 
-container.innerHTML="";
+box.innerHTML="";
 
 
 
 posts.forEach(post=>{
 
 
-container.innerHTML += `
+box.innerHTML += `
 
 <div class="card">
 
@@ -119,41 +165,52 @@ container.innerHTML += `
 
 
 
-window.searchPosts=function(){
+
+window.filterPosts=function(){
 
 
-let text =
-document
-.getElementById("search")
-.value
-.toLowerCase();
+let search =
+document.getElementById("search").value.toLowerCase();
 
 
 
-let filtered =
-allPosts.filter(post=>
+let category =
+document.getElementById("category").value;
 
 
-post.title.toLowerCase().includes(text)
 
-||
+let region =
+document.getElementById("region").value;
 
-post.description.toLowerCase().includes(text)
 
-||
 
-post.location.toLowerCase().includes(text)
+let result =
+allPosts.filter(post=>{
 
+
+return (
+
+post.title.toLowerCase().includes(search)
+
+&&
+
+(category==="" || post.type===category)
+
+&&
+
+(region==="" || post.location===region)
 
 );
 
 
+});
 
-displayPosts(filtered);
+
+
+displayPosts(result);
 
 
 }
-
 
 
 

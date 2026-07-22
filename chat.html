@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ghana Connect Chat</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>💬 Ghana Connect Chat</h1>
+
+</header>
+
+
+
+<div id="messages"></div>
+
+
+<div class="form">
+
+<input id="message" placeholder="Type message">
+
+
+<button onclick="sendMessage()">
+Send
+</button>
+
+
+</div>
+
+
+
+<script type="module">
+
+
+import {db, auth} from "./firebase.js";
+
+
+import {
+
+collection,
+
+addDoc,
+
+getDocs,
+
+orderBy,
+
+query
+
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+let box =
+document.getElementById("messages");
+
+
+
+async function loadMessages(){
+
+
+let q =
+query(
+collection(db,"messages"),
+orderBy("date")
+);
+
+
+
+let snapshot =
+await getDocs(q);
+
+
+
+box.innerHTML="";
+
+
+snapshot.forEach(doc=>{
+
+
+let msg = doc.data();
+
+
+box.innerHTML += `
+
+<div class="card">
+
+<p>
+${msg.text}
+</p>
+
+</div>
+
+`;
+
+});
+
+
+}
+
+
+
+window.sendMessage = async function(){
+
+
+let user = auth.currentUser;
+
+
+if(!user){
+
+alert("Login first");
+
+return;
+
+}
+
+
+
+let text =
+document.getElementById("message").value;
+
+
+
+await addDoc(
+
+collection(db,"messages"),
+
+{
+
+text:text,
+
+user:user.uid,
+
+date:new Date()
+
+}
+
+);
+
+
+
+document.getElementById("message").value="";
+
+
+loadMessages();
+
+
+}
+
+
+
+loadMessages();
+
+
+</script>
+
+
+
+</body>
+
+</html>

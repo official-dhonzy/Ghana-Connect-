@@ -2,57 +2,127 @@
 <html>
 
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Post - Ghana Connect</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 
 <body>
 
 <header>
+
 <h1>🇬🇭 Ghana Connect</h1>
+
 <p>Create a listing</p>
+
 </header>
+
 
 
 <div class="form">
 
+
 <select id="type">
+
 <option value="Jobs">💼 Jobs</option>
+
 <option value="Services">🔧 Services</option>
+
 <option value="Housing">🏠 Housing</option>
+
 <option value="Farming">🌱 Farming</option>
+
 <option value="Marketplace">🛒 Marketplace</option>
+
 </select>
+
 
 
 <input id="title" placeholder="Title">
 
+
+
 <textarea id="description" placeholder="Description"></textarea>
 
-<input id="location" placeholder="Location (Region/City)">
+
+
+<select id="location">
+
+<option value="">
+Select Ghana Region
+</option>
+
+<option>Greater Accra</option>
+
+<option>Ashanti</option>
+
+<option>Western</option>
+
+<option>Central</option>
+
+<option>Eastern</option>
+
+<option>Volta</option>
+
+<option>Northern</option>
+
+<option>Upper East</option>
+
+<option>Upper West</option>
+
+<option>Bono</option>
+
+<option>Bono East</option>
+
+<option>Ahafo</option>
+
+<option>Savannah</option>
+
+<option>North East</option>
+
+<option>Oti</option>
+
+<option>Western North</option>
+
+
+</select>
+
 
 
 <button onclick="createPost()">
+
 Post Now
+
 </button>
+
 
 
 <p id="message"></p>
 
+
 </div>
 
 
+
 <script type="module">
+
 
 import { db, auth } from "./firebase.js";
 
 
 import {
+
 collection,
+
 addDoc
+
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
 
 
 
@@ -62,43 +132,85 @@ window.createPost = async function(){
 let user = auth.currentUser;
 
 
+
 if(!user){
 
+
 document.getElementById("message").innerHTML =
+
 "Please login first";
 
+
 return;
+
 
 }
 
 
 
-await addDoc(
-collection(db,"posts"),
-{
+let post = {
 
-type: document.getElementById("type").value,
 
-title: document.getElementById("title").value,
+type:
+document.getElementById("type").value,
+
+
+title:
+document.getElementById("title").value,
+
 
 description:
 document.getElementById("description").value,
 
+
 location:
 document.getElementById("location").value,
 
-owner:user.uid,
 
-date:new Date()
+owner:
+user.uid,
 
-}
+
+date:
+new Date()
+
+
+};
+
+
+
+try{
+
+
+await addDoc(
+
+collection(db,"posts"),
+
+post
 
 );
 
 
 
 document.getElementById("message").innerHTML =
+
 "Post created successfully ✅";
+
+
+
+}
+
+
+catch(error){
+
+
+document.getElementById("message").innerHTML =
+
+error.message;
+
+
+}
+
 
 
 }

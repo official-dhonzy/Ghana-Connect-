@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ghana Connect</title>
+<title>Ghana Connect Posts</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -29,10 +29,11 @@
 
 
 <input 
-id="search" 
+id="search"
 placeholder="Search jobs, services, products..."
 onkeyup="filterPosts()"
 >
+
 
 
 <select id="category" onchange="filterPosts()">
@@ -58,20 +59,35 @@ onkeyup="filterPosts()"
 <option value="">All Regions</option>
 
 <option>Greater Accra</option>
+
 <option>Ashanti</option>
+
 <option>Western</option>
+
 <option>Central</option>
+
 <option>Eastern</option>
+
 <option>Volta</option>
+
 <option>Northern</option>
+
 <option>Upper East</option>
+
 <option>Upper West</option>
+
 <option>Bono</option>
+
 <option>Bono East</option>
+
 <option>Ahafo</option>
+
 <option>Savannah</option>
+
 <option>North East</option>
+
 <option>Oti</option>
+
 <option>Western North</option>
 
 </select>
@@ -83,7 +99,6 @@ onkeyup="filterPosts()"
 
 
 <div id="posts"></div>
-
 
 
 
@@ -106,7 +121,8 @@ addDoc
 
 
 
-let allPosts = [];
+let allPosts=[];
+
 
 
 
@@ -117,7 +133,9 @@ async function loadPosts(){
 let snapshot =
 
 await getDocs(
+
 collection(db,"posts")
+
 );
 
 
@@ -145,7 +163,9 @@ id:doc.id,
 displayPosts(allPosts);
 
 
+
 }
+
 
 
 
@@ -192,13 +212,28 @@ ${post.verified ? " ✅ Verified" : ""}
 
 
 
-<p>${post.description}</p>
+<p>
+
+${post.description}
+
+</p>
 
 
-<p>📍 ${post.location}</p>
+
+<p>
+
+📍 ${post.location}
+
+</p>
 
 
-<p>📞 ${post.phone}</p>
+
+<p>
+
+📞 ${post.phone}
+
+</p>
+
 
 
 
@@ -216,11 +251,22 @@ ${post.verified ? " ✅ Verified" : ""}
 
 
 
+<button onclick="savePost('${post.id}')">
+
+❤️ Save
+
+</button>
+
+
+
+
+
 <button onclick="startChat('${post.userId}')">
 
 💬 Message Seller
 
 </button>
+
 
 
 
@@ -254,8 +300,7 @@ ${post.verified ? " ✅ Verified" : ""}
 
 
 
-window.startChat = async function(sellerId){
-
+window.savePost = async function(postId){
 
 
 let user = auth.currentUser;
@@ -272,14 +317,73 @@ return;
 
 
 
-if(!sellerId){
 
-alert("Seller information missing");
+await addDoc(
 
-return;
+collection(db,"favorites"),
+
+{
+
+
+userId:user.uid,
+
+
+postId:postId,
+
+
+date:new Date()
+
 
 }
 
+
+);
+
+
+
+alert("Saved ❤️");
+
+
+}
+
+
+
+
+
+
+
+window.startChat = async function(sellerId){
+
+
+
+let user = auth.currentUser;
+
+
+
+if(!user){
+
+
+alert("Please login first");
+
+
+return;
+
+
+}
+
+
+
+
+if(!sellerId){
+
+
+alert("Seller information missing");
+
+
+return;
+
+
+}
 
 
 
@@ -304,14 +408,14 @@ createdAt:new Date()
 
 }
 
-
 );
 
 
 
 window.location.href =
 
-"message.html?id=" + chat.id;
+"message.html?id=" + chat.id +
+"&receiverId=" + sellerId;
 
 
 
@@ -324,6 +428,7 @@ window.location.href =
 
 
 window.filterPosts=function(){
+
 
 
 let text =
@@ -345,6 +450,7 @@ let region =
 
 document.getElementById("region")
 .value;
+
 
 
 
@@ -376,6 +482,9 @@ displayPosts(result);
 
 
 }
+
+
+
 
 
 

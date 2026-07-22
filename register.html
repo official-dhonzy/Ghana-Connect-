@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ghana Connect Register</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+<header>
+<h1>🇬🇭 Ghana Connect</h1>
+<p>Create your account</p>
+</header>
+
+
+<div class="form">
+
+<input id="name" placeholder="Full name">
+
+<input id="email" placeholder="Email">
+
+<input id="password" type="password" placeholder="Password">
+
+
+<button onclick="register()">
+Create Account
+</button>
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import { 
+createUserWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+import {
+doc,
+setDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+window.register = async function(){
+
+let name = document.getElementById("name").value;
+
+let email = document.getElementById("email").value;
+
+let password = document.getElementById("password").value;
+
+
+try{
+
+
+const userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+
+await setDoc(
+doc(db,"users",userCredential.user.uid),
+{
+name:name,
+email:email,
+created:new Date()
+}
+);
+
+
+document.getElementById("message").innerHTML =
+"Account created successfully ✅";
+
+
+}
+
+catch(error){
+
+document.getElementById("message").innerHTML =
+error.message;
+
+}
+
+
+}
+
+</script>
+
+
+</body>
+</html>

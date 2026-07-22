@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ghana Connect Admin</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🇬🇭 Ghana Connect Admin</h1>
+
+<p>Control Panel</p>
+
+</header>
+
+
+
+<h2>Users</h2>
+
+<div id="users"></div>
+
+
+
+<h2>Posts</h2>
+
+<div id="posts"></div>
+
+
+
+<script type="module">
+
+
+import {db} from "./firebase.js";
+
+
+import {
+
+collection,
+
+getDocs
+
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+
+async function loadUsers(){
+
+
+let box =
+document.getElementById("users");
+
+
+let snapshot =
+await getDocs(collection(db,"users"));
+
+
+
+snapshot.forEach(doc=>{
+
+
+let user = doc.data();
+
+
+
+box.innerHTML += `
+
+<div class="card">
+
+<h3>${user.name}</h3>
+
+<p>${user.email}</p>
+
+<p>📍 ${user.region}</p>
+
+<p>🛠️ ${user.skills}</p>
+
+</div>
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+async function loadPosts(){
+
+
+let box =
+document.getElementById("posts");
+
+
+
+let snapshot =
+await getDocs(collection(db,"posts"));
+
+
+
+snapshot.forEach(doc=>{
+
+
+let post =
+doc.data();
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+<h3>${post.type}</h3>
+
+<h2>${post.title}</h2>
+
+<p>${post.description}</p>
+
+<p>📍 ${post.location}</p>
+
+
+${post.featured ? "⭐ Featured" : ""}
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+loadUsers();
+
+loadPosts();
+
+
+</script>
+
+
+</body>
+
+</html>

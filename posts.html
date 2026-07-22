@@ -87,17 +87,20 @@ onkeyup="filterPosts()"
 
 
 
+
 <script type="module">
 
 
-import {db} from "./firebase.js";
+import {db, auth} from "./firebase.js";
 
 
 import {
 
 collection,
 
-getDocs
+getDocs,
+
+addDoc
 
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
@@ -107,11 +110,15 @@ let allPosts = [];
 
 
 
+
 async function loadPosts(){
 
 
 let snapshot =
-await getDocs(collection(db,"posts"));
+
+await getDocs(
+collection(db,"posts")
+);
 
 
 
@@ -139,6 +146,8 @@ displayPosts(allPosts);
 
 
 }
+
+
 
 
 
@@ -193,6 +202,7 @@ ${post.verified ? " ✅ Verified" : ""}
 
 
 
+
 <a href="tel:${post.phone}">
 
 <button>
@@ -202,6 +212,16 @@ ${post.verified ? " ✅ Verified" : ""}
 </button>
 
 </a>
+
+
+
+
+<button onclick="startChat('${post.userId}')">
+
+💬 Message Seller
+
+</button>
+
 
 
 
@@ -228,6 +248,76 @@ ${post.verified ? " ✅ Verified" : ""}
 
 
 }
+
+
+
+
+
+
+window.startChat = async function(sellerId){
+
+
+
+let user = auth.currentUser;
+
+
+
+if(!user){
+
+alert("Please login first");
+
+return;
+
+}
+
+
+
+if(!sellerId){
+
+alert("Seller information missing");
+
+return;
+
+}
+
+
+
+
+let chat = await addDoc(
+
+collection(db,"conversations"),
+
+{
+
+
+users:[
+
+user.uid,
+
+sellerId
+
+],
+
+
+createdAt:new Date()
+
+
+}
+
+
+);
+
+
+
+window.location.href =
+
+"message.html?id=" + chat.id;
+
+
+
+}
+
+
 
 
 
@@ -263,7 +353,9 @@ let result = allPosts.filter(post=>{
 
 return (
 
-post.title.toLowerCase().includes(text)
+(post.title || "")
+.toLowerCase()
+.includes(text)
 
 &&
 
@@ -288,6 +380,7 @@ displayPosts(result);
 
 
 loadPosts();
+
 
 
 </script>

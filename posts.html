@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ghana Connect Posts</title>
+<title>Ghana Connect</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -16,13 +16,21 @@
 
 
 <header>
+
 <h1>🇬🇭 Ghana Connect</h1>
-<p>Explore opportunities</p>
+
+<p>Find opportunities and solutions</p>
+
 </header>
 
 
 
-<h2>Latest Posts</h2>
+<div class="search-box">
+
+<input id="search" placeholder="Search jobs, services, houses..." onkeyup="searchPosts()">
+
+</div>
+
 
 
 <div id="posts"></div>
@@ -37,42 +45,56 @@ import { db } from "./firebase.js";
 
 import {
 collection,
-getDocs,
-query,
-orderBy
+getDocs
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
 
-const postsDiv =
-document.getElementById("posts");
+let allPosts = [];
 
 
 
 async function loadPosts(){
 
 
-const q =
-query(
-collection(db,"posts"),
-orderBy("date","desc")
-);
-
-
-
 const snapshot =
-await getDocs(q);
+await getDocs(collection(db,"posts"));
 
+
+
+allPosts=[];
 
 
 snapshot.forEach((doc)=>{
 
+allPosts.push(doc.data());
 
-let post = doc.data();
+});
 
 
 
-postsDiv.innerHTML += `
+displayPosts(allPosts);
+
+
+}
+
+
+
+function displayPosts(posts){
+
+
+const container =
+document.getElementById("posts");
+
+
+container.innerHTML="";
+
+
+
+posts.forEach(post=>{
+
+
+container.innerHTML += `
 
 <div class="card">
 
@@ -89,7 +111,6 @@ postsDiv.innerHTML += `
 `;
 
 
-
 });
 
 
@@ -97,11 +118,49 @@ postsDiv.innerHTML += `
 
 
 
+
+window.searchPosts=function(){
+
+
+let text =
+document
+.getElementById("search")
+.value
+.toLowerCase();
+
+
+
+let filtered =
+allPosts.filter(post=>
+
+
+post.title.toLowerCase().includes(text)
+
+||
+
+post.description.toLowerCase().includes(text)
+
+||
+
+post.location.toLowerCase().includes(text)
+
+
+);
+
+
+
+displayPosts(filtered);
+
+
+}
+
+
+
+
 loadPosts();
 
 
 </script>
-
 
 
 </body>

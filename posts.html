@@ -25,7 +25,65 @@
 
 
 
+<div class="search-box">
+
+
+<input 
+id="search" 
+placeholder="Search jobs, services, products..."
+onkeyup="filterPosts()"
+>
+
+
+<select id="category" onchange="filterPosts()">
+
+<option value="">All Categories</option>
+
+<option>Jobs</option>
+
+<option>Services</option>
+
+<option>Housing</option>
+
+<option>Farming</option>
+
+<option>Marketplace</option>
+
+</select>
+
+
+
+<select id="region" onchange="filterPosts()">
+
+<option value="">All Regions</option>
+
+<option>Greater Accra</option>
+<option>Ashanti</option>
+<option>Western</option>
+<option>Central</option>
+<option>Eastern</option>
+<option>Volta</option>
+<option>Northern</option>
+<option>Upper East</option>
+<option>Upper West</option>
+<option>Bono</option>
+<option>Bono East</option>
+<option>Ahafo</option>
+<option>Savannah</option>
+<option>North East</option>
+<option>Oti</option>
+<option>Western North</option>
+
+</select>
+
+
+</div>
+
+
+
+
 <div id="posts"></div>
+
 
 
 
@@ -45,8 +103,7 @@ getDocs
 
 
 
-let postsBox =
-document.getElementById("posts");
+let allPosts = [];
 
 
 
@@ -58,22 +115,72 @@ await getDocs(collection(db,"posts"));
 
 
 
+allPosts=[];
+
+
+
 snapshot.forEach((doc)=>{
 
 
-let post = doc.data();
+allPosts.push({
+
+id:doc.id,
+
+...doc.data()
+
+});
 
 
-postsBox.innerHTML += `
+});
+
+
+
+displayPosts(allPosts);
+
+
+}
+
+
+
+
+function displayPosts(posts){
+
+
+let box =
+document.getElementById("posts");
+
+
+box.innerHTML="";
+
+
+
+posts.forEach(post=>{
+
+
+box.innerHTML += `
 
 
 <div class="card">
 
 
-<h3>${post.type}</h3>
+<h3>
+
+${post.type}
+
+${post.featured ? " ⭐ Featured" : ""}
+
+</h3>
 
 
-<h2>${post.title}</h2>
+
+<h2>
+
+${post.title}
+
+${post.verified ? " ✅ Verified" : ""}
+
+</h2>
+
 
 
 <p>${post.description}</p>
@@ -85,23 +192,29 @@ postsBox.innerHTML += `
 <p>📞 ${post.phone}</p>
 
 
+
 <a href="tel:${post.phone}">
 
 <button>
-Contact
+
+📞 Contact
+
 </button>
 
 </a>
 
 
 
-<a href="review.html?post=${doc.id}">
+<a href="review.html?post=${post.id}">
 
 <button>
+
 ⭐ Review
+
 </button>
 
 </a>
+
 
 
 </div>
@@ -114,6 +227,61 @@ Contact
 });
 
 
+}
+
+
+
+
+
+window.filterPosts=function(){
+
+
+let text =
+
+document.getElementById("search")
+.value
+.toLowerCase();
+
+
+
+let category =
+
+document.getElementById("category")
+.value;
+
+
+
+let region =
+
+document.getElementById("region")
+.value;
+
+
+
+let result = allPosts.filter(post=>{
+
+
+return (
+
+post.title.toLowerCase().includes(text)
+
+&&
+
+(category==="" || post.type===category)
+
+&&
+
+(region==="" || post.location===region)
+
+);
+
+
+});
+
+
+
+displayPosts(result);
+
 
 }
 
@@ -122,8 +290,8 @@ Contact
 loadPosts();
 
 
-
 </script>
+
 
 
 </body>

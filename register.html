@@ -1,31 +1,69 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ghana Connect Register</title>
+<title>Register - Ghana Connect</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 
+
 <body>
 
 
 <header>
+
 <h1>🇬🇭 Ghana Connect</h1>
-<p>Create your account</p>
+
+<p>Create Account</p>
+
 </header>
+
 
 
 <div class="form">
 
+
 <input id="name" placeholder="Full name">
+
 
 <input id="email" placeholder="Email">
 
+
 <input id="password" type="password" placeholder="Password">
+
+
+<input id="phone" placeholder="Phone number">
+
+
+<select id="region">
+
+<option>Choose Region</option>
+<option>Greater Accra</option>
+<option>Ashanti</option>
+<option>Western</option>
+<option>Central</option>
+<option>Eastern</option>
+<option>Volta</option>
+<option>Northern</option>
+<option>Upper East</option>
+<option>Upper West</option>
+<option>Bono</option>
+<option>Bono East</option>
+<option>Ahafo</option>
+<option>Savannah</option>
+<option>North East</option>
+<option>Oti</option>
+<option>Western North</option>
+
+</select>
+
+
+<input id="skills" placeholder="Skills or Business">
 
 
 <button onclick="register()">
@@ -39,69 +77,100 @@ Create Account
 </div>
 
 
+
 <script type="module">
 
-import { auth, db } from "./firebase.js";
 
-import { 
-createUserWithEmailAndPassword 
+import {auth,db} from "./firebase.js";
+
+
+import {
+
+createUserWithEmailAndPassword
+
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 
 import {
+
 doc,
+
 setDoc
+
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
+
+
 window.register = async function(){
-
-let name = document.getElementById("name").value;
-
-let email = document.getElementById("email").value;
-
-let password = document.getElementById("password").value;
 
 
 try{
 
 
-const userCredential =
-await createUserWithEmailAndPassword(
+const user = await createUserWithEmailAndPassword(
+
 auth,
-email,
-password
+
+email.value,
+
+password.value
+
 );
+
 
 
 await setDoc(
-doc(db,"users",userCredential.user.uid),
+
+doc(db,"users",user.user.uid),
+
 {
-name:name,
-email:email,
+
+
+name:name.value,
+
+email:email.value,
+
+phone:phone.value,
+
+region:region.value,
+
+skills:skills.value,
+
+
 created:new Date()
+
+
 }
+
 );
 
 
-document.getElementById("message").innerHTML =
-"Account created successfully ✅";
+
+message.innerHTML =
+"Account created ✅";
 
 
 }
+
 
 catch(error){
 
-document.getElementById("message").innerHTML =
+
+message.innerHTML =
 error.message;
 
+
 }
 
 
 }
+
+
 
 </script>
 
 
 </body>
+
 </html>

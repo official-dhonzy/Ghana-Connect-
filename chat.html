@@ -26,17 +26,21 @@
 <div id="messages"></div>
 
 
+
 <div class="form">
 
 <input id="message" placeholder="Type message">
 
 
 <button onclick="sendMessage()">
+
 Send
+
 </button>
 
 
 </div>
+
 
 
 
@@ -52,11 +56,11 @@ collection,
 
 addDoc,
 
-getDocs,
+query,
 
 orderBy,
 
-query
+onSnapshot
 
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
@@ -67,47 +71,63 @@ document.getElementById("messages");
 
 
 
-async function loadMessages(){
+let messagesQuery = query(
 
-
-let q =
-query(
 collection(db,"messages"),
+
 orderBy("date")
+
 );
 
 
 
-let snapshot =
-await getDocs(q);
+// Real-time messages
 
+onSnapshot(messagesQuery,(snapshot)=>{
 
 
 box.innerHTML="";
 
 
-snapshot.forEach(doc=>{
+
+snapshot.forEach((doc)=>{
 
 
 let msg = doc.data();
 
 
+
 box.innerHTML += `
+
 
 <div class="card">
 
 <p>
+
 ${msg.text}
+
 </p>
+
+<small>
+
+${msg.user}
+
+</small>
+
 
 </div>
 
+
 `;
+
+
 
 });
 
 
-}
+});
+
+
 
 
 
@@ -117,9 +137,10 @@ window.sendMessage = async function(){
 let user = auth.currentUser;
 
 
+
 if(!user){
 
-alert("Login first");
+alert("Please login first");
 
 return;
 
@@ -127,8 +148,22 @@ return;
 
 
 
+
+let input =
+document.getElementById("message");
+
+
+
 let text =
-document.getElementById("message").value;
+input.value.trim();
+
+
+
+if(text===""){
+
+return;
+
+}
 
 
 
@@ -138,11 +173,13 @@ collection(db,"messages"),
 
 {
 
+
 text:text,
 
 user:user.uid,
 
 date:new Date()
+
 
 }
 
@@ -150,17 +187,12 @@ date:new Date()
 
 
 
-document.getElementById("message").value="";
+input.value="";
 
-
-loadMessages();
 
 
 }
 
-
-
-loadMessages();
 
 
 </script>

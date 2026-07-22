@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ghana Connect Profile</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<header>
+<h1>🇬🇭 Ghana Connect</h1>
+<p>Your Profile</p>
+</header>
+
+
+<div class="form">
+
+<h2 id="name">Loading...</h2>
+
+<p id="email"></p>
+
+
+<button onclick="logout()">
+Logout
+</button>
+
+
+</div>
+
+
+
+<script type="module">
+
+
+import { auth, db } from "./firebase.js";
+
+
+import {
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+import {
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+onAuthStateChanged(auth, async(user)=>{
+
+
+if(user){
+
+
+const userDoc =
+await getDoc(doc(db,"users",user.uid));
+
+
+if(userDoc.exists()){
+
+
+document.getElementById("name").innerHTML =
+userDoc.data().name;
+
+
+document.getElementById("email").innerHTML =
+userDoc.data().email;
+
+
+}
+
+
+}else{
+
+
+window.location.href="login.html";
+
+
+}
+
+
+
+});
+
+
+
+window.logout = function(){
+
+signOut(auth);
+
+window.location.href="index.html";
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Business Verification - Ghana Connect</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🇬🇭 Ghana Connect</h1>
+
+<p>Business Verification</p>
+
+</header>
+
+
+
+<div class="form">
+
+
+<input id="businessName" placeholder="Business name">
+
+
+<select id="type">
+
+<option>Choose Business Type</option>
+
+<option>Shop</option>
+
+<option>Service Provider</option>
+
+<option>Farmer</option>
+
+<option>Company</option>
+
+<option>Other</option>
+
+</select>
+
+
+<input id="phone" placeholder="Phone number">
+
+
+<select id="region">
+
+<option>Select Region</option>
+
+<option>Greater Accra</option>
+<option>Ashanti</option>
+<option>Western</option>
+<option>Central</option>
+<option>Eastern</option>
+<option>Volta</option>
+<option>Northern</option>
+<option>Upper East</option>
+<option>Upper West</option>
+<option>Bono</option>
+<option>Bono East</option>
+<option>Ahafo</option>
+<option>Savannah</option>
+<option>North East</option>
+<option>Oti</option>
+<option>Western North</option>
+
+</select>
+
+
+<textarea id="about" placeholder="Describe your business"></textarea>
+
+
+
+<button onclick="submitVerification()">
+
+Submit Verification
+
+</button>
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+
+<script type="module">
+
+
+import {db, auth} from "./firebase.js";
+
+
+import {
+
+collection,
+
+addDoc
+
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+window.submitVerification = async function(){
+
+
+let user = auth.currentUser;
+
+
+if(!user){
+
+message.innerHTML="Please login first";
+
+return;
+
+}
+
+
+
+await addDoc(
+
+collection(db,"verification"),
+
+{
+
+
+owner:user.uid,
+
+business:
+businessName.value,
+
+type:type.value,
+
+phone:phone.value,
+
+region:region.value,
+
+about:about.value,
+
+status:"pending",
+
+date:new Date()
+
+
+}
+
+);
+
+
+
+message.innerHTML=
+"Verification request submitted ✅";
+
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Verification Admin - Ghana Connect</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🇬🇭 Ghana Connect Admin</h1>
+
+<p>Business Verification Requests</p>
+
+</header>
+
+
+
+<div id="requests"></div>
+
+
+
+<script type="module">
+
+
+import {db} from "./firebase.js";
+
+
+import {
+
+collection,
+
+getDocs,
+
+doc,
+
+updateDoc
+
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+let box =
+document.getElementById("requests");
+
+
+
+async function loadRequests(){
+
+
+let snapshot =
+await getDocs(collection(db,"verification"));
+
+
+
+snapshot.forEach((item)=>{
+
+
+let data = item.data();
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<h2>${data.business}</h2>
+
+
+<p>Type: ${data.type}</p>
+
+
+<p>📞 ${data.phone}</p>
+
+
+<p>📍 ${data.region}</p>
+
+
+<p>${data.about}</p>
+
+
+<p>Status: ${data.status}</p>
+
+
+
+<button onclick="approve('${item.id}')">
+
+Approve ✅
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+window.approve = async function(id){
+
+
+await updateDoc(
+
+doc(db,"verification",id),
+
+{
+
+status:"verified"
+
+}
+
+);
+
+
+alert("Business verified ✅");
+
+
+location.reload();
+
+
+}
+
+
+
+loadRequests();
+
+
+</script>
+
+
+
+</body>
+
+</html>

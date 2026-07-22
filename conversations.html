@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chats - Ghana Connect</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>💬 My Chats</h1>
+
+</header>
+
+
+
+<div id="chatList"></div>
+
+
+
+
+<script type="module">
+
+
+import {db, auth} from "./firebase.js";
+
+
+import {
+
+collection,
+
+query,
+
+where,
+
+getDocs
+
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+let box =
+document.getElementById("chatList");
+
+
+
+async function loadChats(){
+
+
+let user = auth.currentUser;
+
+
+
+if(!user){
+
+box.innerHTML =
+"Please login first";
+
+return;
+
+}
+
+
+
+let q = query(
+
+collection(db,"conversations"),
+
+where("users","array-contains",user.uid)
+
+);
+
+
+
+let snapshot =
+await getDocs(q);
+
+
+
+box.innerHTML="";
+
+
+
+snapshot.forEach((doc)=>{
+
+
+let chat =
+doc.data();
+
+
+
+box.innerHTML += `
+
+
+<div class="card"
+onclick="openChat('${doc.id}')">
+
+
+<h3>
+💬 Conversation
+</h3>
+
+
+<p>
+${chat.users.length} users
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+window.openChat=function(id){
+
+
+window.location.href =
+"message.html?id="+id;
+
+
+}
+
+
+
+auth.onAuthStateChanged(()=>{
+
+
+loadChats();
+
+
+});
+
+
+
+</script>
+
+
+</body>
+
+</html>

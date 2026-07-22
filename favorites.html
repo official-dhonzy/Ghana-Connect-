@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Favorites - Ghana Connect</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>❤️ My Favorites</h1>
+
+<p>Saved listings</p>
+
+</header>
+
+
+
+<div id="favorites"></div>
+
+
+
+
+<script type="module">
+
+
+import {db, auth} from "./firebase.js";
+
+
+import {
+
+collection,
+
+query,
+
+where,
+
+getDocs,
+
+doc,
+
+getDoc
+
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+
+
+auth.onAuthStateChanged(async(user)=>{
+
+
+if(!user){
+
+
+window.location.href="login.html";
+
+
+return;
+
+
+}
+
+
+
+loadFavorites(user.uid);
+
+
+
+});
+
+
+
+
+
+
+async function loadFavorites(uid){
+
+
+
+let favQuery = query(
+
+collection(db,"favorites"),
+
+where("userId","==",uid)
+
+);
+
+
+
+let favSnapshot =
+
+await getDocs(favQuery);
+
+
+
+let box =
+
+document.getElementById("favorites");
+
+
+
+box.innerHTML="";
+
+
+
+for(let fav of favSnapshot.docs){
+
+
+
+let data = fav.data();
+
+
+
+let postDoc = await getDoc(
+
+doc(db,"posts",data.postId)
+
+);
+
+
+
+if(postDoc.exists()){
+
+
+
+let post = postDoc.data();
+
+
+
+box.innerHTML += `
+
+
+<div class="card">
+
+
+<h2>
+
+${post.title}
+
+</h2>
+
+
+<p>
+
+${post.description}
+
+</p>
+
+
+<p>
+
+📍 ${post.location}
+
+</p>
+
+
+<p>
+
+📞 ${post.phone}
+
+</p>
+
+
+
+<a href="tel:${post.phone}">
+
+<button>
+
+📞 Contact
+
+</button>
+
+</a>
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+}
+
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

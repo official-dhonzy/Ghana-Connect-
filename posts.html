@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ghana Connect Posts</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+<h1>🇬🇭 Ghana Connect</h1>
+<p>Explore opportunities</p>
+</header>
+
+
+
+<h2>Latest Posts</h2>
+
+
+<div id="posts"></div>
+
+
+
+<script type="module">
+
+
+import { db } from "./firebase.js";
+
+
+import {
+collection,
+getDocs,
+query,
+orderBy
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+const postsDiv =
+document.getElementById("posts");
+
+
+
+async function loadPosts(){
+
+
+const q =
+query(
+collection(db,"posts"),
+orderBy("date","desc")
+);
+
+
+
+const snapshot =
+await getDocs(q);
+
+
+
+snapshot.forEach((doc)=>{
+
+
+let post = doc.data();
+
+
+
+postsDiv.innerHTML += `
+
+<div class="card">
+
+<h3>${post.type}</h3>
+
+<h2>${post.title}</h2>
+
+<p>${post.description}</p>
+
+<p>📍 ${post.location}</p>
+
+</div>
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+loadPosts();
+
+
+</script>
+
+
+
+</body>
+
+</html>

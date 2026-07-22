@@ -9,6 +9,8 @@
 
 <link rel="stylesheet" href="style.css">
 
+<link rel="manifest" href="manifest.json">
+
 </head>
 
 
@@ -29,6 +31,7 @@ Connecting Ghanaians to opportunities and solutions
 
 <div class="account-buttons">
 
+
 <a href="register.html">
 <button>
 Create Account
@@ -42,12 +45,14 @@ Login
 </button>
 </a>
 
+
 </div>
 
 
 
 
 <div class="search-box">
+
 
 <input 
 id="search"
@@ -56,10 +61,14 @@ placeholder="Search jobs, services, houses..."
 
 
 <button onclick="search()">
+
 🔍
+
 </button>
 
+
 </div>
+
 
 
 
@@ -81,6 +90,7 @@ placeholder="Search jobs, services, houses..."
 <p>Find work and opportunities</p>
 
 </div>
+
 
 
 
@@ -179,7 +189,7 @@ Western • Northern • Bono • Oti • Upper East • Upper West
 <div class="card">
 
 <p>
-Trusted businesses and services will appear here.
+Verified and promoted businesses will appear here.
 </p>
 
 
@@ -191,7 +201,9 @@ Verify Business
 
 </a>
 
+
 </div>
+
 
 
 
@@ -227,6 +239,7 @@ Verify Business
 
 
 
+
 <script>
 
 
@@ -251,9 +264,43 @@ window.location.href =
 
 }
 
-
 }
 
+
+</script>
+
+
+
+
+<script type="module">
+
+
+import { enableNotifications } from "./notifications.js";
+
+
+enableNotifications();
+
+
+
+</script>
+
+
+
+
+
+
+<script>
+
+
+if("serviceWorker" in navigator){
+
+
+navigator.serviceWorker.register(
+"service-worker.js"
+);
+
+
+}
 
 
 </script>

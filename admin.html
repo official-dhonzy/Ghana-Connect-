@@ -24,32 +24,121 @@
 </header>
 
 
+<h2 id="status">
+Checking access...
+</h2>
 
-<h2>Users</h2>
+
+<h2>
+Users
+</h2>
+
+<p id="userCount"></p>
 
 <div id="users"></div>
 
 
 
-<h2>Posts</h2>
+
+<h2>
+Posts
+</h2>
+
+<p id="postCount"></p>
 
 <div id="posts"></div>
+
+
+
 
 
 
 <script type="module">
 
 
-import {db} from "./firebase.js";
+import {db, auth} from "./firebase.js";
 
 
 import {
 
 collection,
 
-getDocs
+getDocs,
+
+doc,
+
+getDoc,
+
+deleteDoc
 
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+import {
+
+onAuthStateChanged
+
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+
+
+
+
+
+onAuthStateChanged(auth,async(user)=>{
+
+
+if(!user){
+
+document.getElementById("status").innerHTML =
+"Please login first";
+
+return;
+
+}
+
+
+
+let adminDoc = await getDoc(
+
+doc(db,"users",user.uid)
+
+);
+
+
+
+if(
+adminDoc.exists() &&
+adminDoc.data().role==="admin"
+){
+
+
+document.getElementById("status").innerHTML =
+"✅ Admin Access";
+
+
+loadUsers();
+
+loadPosts();
+
+
+
+}else{
+
+
+document.getElementById("status").innerHTML =
+"❌ Access denied";
+
+
+}
+
+
+
+});
+
+
+
 
 
 
@@ -62,30 +151,52 @@ document.getElementById("users");
 
 
 let snapshot =
-await getDocs(collection(db,"users"));
+
+await getDocs(
+
+collection(db,"users")
+
+);
+
+
+
+document.getElementById("userCount").innerHTML =
+
+"Total Users: " + snapshot.size;
+
+
+
+box.innerHTML="";
 
 
 
 snapshot.forEach(doc=>{
 
 
-let user = doc.data();
+let user=doc.data();
 
 
 
 box.innerHTML += `
 
+
 <div class="card">
 
-<h3>${user.name}</h3>
 
-<p>${user.email}</p>
+<h3>${user.name || "User"}</h3>
 
-<p>📍 ${user.region}</p>
 
-<p>🛠️ ${user.skills}</p>
+<p>${user.email || ""}</p>
+
+
+<p>📍 ${user.region || ""}</p>
+
+
+<p>Role: ${user.role || "user"}</p>
+
 
 </div>
+
 
 `;
 
@@ -94,7 +205,13 @@ box.innerHTML += `
 });
 
 
+
 }
+
+
+
+
+
 
 
 
@@ -106,17 +223,30 @@ let box =
 document.getElementById("posts");
 
 
-
 let snapshot =
-await getDocs(collection(db,"posts"));
+
+await getDocs(
+
+collection(db,"posts")
+
+);
 
 
 
-snapshot.forEach(doc=>{
+document.getElementById("postCount").innerHTML =
+
+"Total Posts: " + snapshot.size;
 
 
-let post =
-doc.data();
+
+box.innerHTML="";
+
+
+
+snapshot.forEach(docSnap=>{
+
+
+let post=docSnap.data();
 
 
 
@@ -125,16 +255,25 @@ box.innerHTML += `
 
 <div class="card">
 
+
 <h3>${post.type}</h3>
+
 
 <h2>${post.title}</h2>
 
+
 <p>${post.description}</p>
+
 
 <p>📍 ${post.location}</p>
 
 
-${post.featured ? "⭐ Featured" : ""}
+
+<button onclick="deletePost('${docSnap.id}')">
+
+🗑 Delete
+
+</button>
 
 
 </div>
@@ -147,17 +286,50 @@ ${post.featured ? "⭐ Featured" : ""}
 });
 
 
+}
+
+
+
+
+
+
+window.deletePost = async function(id){
+
+
+let confirmDelete = confirm(
+
+"Delete this post?"
+
+);
+
+
+
+if(confirmDelete){
+
+
+await deleteDoc(
+
+doc(db,"posts",id)
+
+);
+
+
+alert("Post deleted");
+
+
+location.reload();
+
 
 }
 
 
 
-loadUsers();
+}
 
-loadPosts();
 
 
 </script>
+
 
 
 </body>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Payment - Ghana Connect</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🇬🇭 Ghana Connect</h1>
+
+<p>Upgrade your listing</p>
+
+</header>
+
+
+
+
+<div class="form">
+
+
+<h2>Select Package</h2>
+
+
+<select id="plan">
+
+
+<option value="2000">
+⭐ Featured Listing - GH₵20
+</option>
+
+
+<option value="5000">
+👑 Premium Account - GH₵50
+</option>
+
+
+</select>
+
+
+
+
+<input 
+id="email"
+placeholder="Email address"
+>
+
+
+
+<button onclick="pay()">
+
+Pay with Mobile Money
+
+</button>
+
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+
+
+
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+
+
+<script>
+
+
+window.pay=function(){
+
+
+
+let amount =
+
+document.getElementById("plan").value;
+
+
+
+let email =
+
+document.getElementById("email").value;
+
+
+
+if(email===""){
+
+alert("Enter email");
+
+return;
+
+}
+
+
+
+
+
+let handler = PaystackPop.setup({
+
+
+
+key:
+
+"pk_test_f152a60f37b7870457adb32e04df92868548b4e0",
+
+
+
+email: email,
+
+
+
+amount: amount,
+
+
+
+currency:"GHS",
+
+
+
+channels:[
+
+"mobile_money"
+
+],
+
+
+
+
+callback:function(response){
+
+
+
+document.getElementById("message").innerHTML =
+
+"Payment successful ✅ Reference: "
++
+response.reference;
+
+
+
+},
+
+
+
+
+onClose:function(){
+
+
+
+document.getElementById("message").innerHTML =
+
+"Payment cancelled";
+
+
+}
+
+
+
+});
+
+
+
+handler.openIframe();
+
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

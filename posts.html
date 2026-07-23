@@ -27,27 +27,20 @@
 
 <div class="search-box">
 
-
 <input 
 id="search"
-placeholder="Search jobs, services, products..."
+placeholder="Search..."
 onkeyup="filterPosts()"
 >
-
 
 
 <select id="category" onchange="filterPosts()">
 
 <option value="">All Categories</option>
-
 <option>Jobs</option>
-
 <option>Services</option>
-
 <option>Housing</option>
-
 <option>Farming</option>
-
 <option>Marketplace</option>
 
 </select>
@@ -57,44 +50,27 @@ onkeyup="filterPosts()"
 <select id="region" onchange="filterPosts()">
 
 <option value="">All Regions</option>
-
 <option>Greater Accra</option>
-
 <option>Ashanti</option>
-
 <option>Western</option>
-
 <option>Central</option>
-
 <option>Eastern</option>
-
 <option>Volta</option>
-
 <option>Northern</option>
-
 <option>Upper East</option>
-
 <option>Upper West</option>
-
 <option>Bono</option>
-
 <option>Bono East</option>
-
 <option>Ahafo</option>
-
 <option>Savannah</option>
-
 <option>North East</option>
-
 <option>Oti</option>
-
 <option>Western North</option>
 
 </select>
 
 
 </div>
-
 
 
 
@@ -112,9 +88,7 @@ import {db, auth} from "./firebase.js";
 import {
 
 collection,
-
 getDocs,
-
 addDoc
 
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
@@ -126,25 +100,17 @@ let allPosts=[];
 
 
 
-
 async function loadPosts(){
 
 
 let snapshot =
-
-await getDocs(
-
-collection(db,"posts")
-
-);
-
+await getDocs(collection(db,"posts"));
 
 
 allPosts=[];
 
 
-
-snapshot.forEach((doc)=>{
+snapshot.forEach(doc=>{
 
 
 allPosts.push({
@@ -159,9 +125,71 @@ id:doc.id,
 });
 
 
-
 displayPosts(allPosts);
 
+
+}
+
+
+
+
+
+
+async function getRating(postId){
+
+
+let snapshot = await getDocs(
+
+collection(db,"reviews")
+
+);
+
+
+
+let total=0;
+
+let count=0;
+
+
+
+snapshot.forEach(doc=>{
+
+
+let review=doc.data();
+
+
+
+if(review.postId===postId){
+
+
+total += review.rating;
+
+count++;
+
+
+}
+
+
+});
+
+
+
+if(count===0){
+
+return "⭐ No reviews";
+
+}
+
+
+
+let average =
+
+(total/count).toFixed(1);
+
+
+
+return "⭐ " + average + 
+" (" + count + " reviews)";
 
 
 }
@@ -172,18 +200,22 @@ displayPosts(allPosts);
 
 
 
-function displayPosts(posts){
+async function displayPosts(posts){
 
 
-let box =
-document.getElementById("posts");
+let box=document.getElementById("posts");
 
 
 box.innerHTML="";
 
 
 
-posts.forEach(post=>{
+for(let post of posts){
+
+
+
+let rating = await getRating(post.id);
+
 
 
 box.innerHTML += `
@@ -196,8 +228,6 @@ box.innerHTML += `
 
 ${post.type}
 
-${post.featured ? " ⭐ Featured" : ""}
-
 </h3>
 
 
@@ -206,7 +236,7 @@ ${post.featured ? " ⭐ Featured" : ""}
 
 ${post.title}
 
-${post.verified ? " ✅ Verified" : ""}
+${post.verified ? " ✅":""}
 
 </h2>
 
@@ -219,7 +249,6 @@ ${post.description}
 </p>
 
 
-
 <p>
 
 📍 ${post.location}
@@ -230,24 +259,9 @@ ${post.description}
 
 <p>
 
-📞 ${post.phone}
+${rating}
 
 </p>
-
-
-
-
-
-<a href="tel:${post.phone}">
-
-<button>
-
-📞 Contact
-
-</button>
-
-</a>
-
 
 
 
@@ -260,7 +274,6 @@ ${post.description}
 
 
 
-
 <button onclick="startChat('${post.userId}')">
 
 💬 Message Seller
@@ -269,13 +282,11 @@ ${post.description}
 
 
 
-
-
 <a href="review.html?post=${post.id}">
 
 <button>
 
-⭐ Review
+⭐ Write Review
 
 </button>
 
@@ -290,7 +301,8 @@ ${post.description}
 
 
 
-});
+}
+
 
 
 }
@@ -303,18 +315,16 @@ ${post.description}
 window.savePost = async function(postId){
 
 
-let user = auth.currentUser;
-
+let user=auth.currentUser;
 
 
 if(!user){
 
-alert("Please login first");
+alert("Login first");
 
 return;
 
 }
-
 
 
 
@@ -324,18 +334,13 @@ collection(db,"favorites"),
 
 {
 
-
 userId:user.uid,
-
 
 postId:postId,
 
-
 date:new Date()
 
-
 }
-
 
 );
 
@@ -352,36 +357,17 @@ alert("Saved ❤️");
 
 
 
-window.startChat = async function(sellerId){
+window.startChat=async function(sellerId){
 
 
-
-let user = auth.currentUser;
-
+let user=auth.currentUser;
 
 
 if(!user){
 
-
-alert("Please login first");
-
+alert("Login first");
 
 return;
-
-
-}
-
-
-
-
-if(!sellerId){
-
-
-alert("Seller information missing");
-
-
-return;
-
 
 }
 
@@ -393,18 +379,9 @@ collection(db,"conversations"),
 
 {
 
-
-users:[
-
-user.uid,
-
-sellerId
-
-],
-
+users:[user.uid,sellerId],
 
 createdAt:new Date()
-
 
 }
 
@@ -412,11 +389,10 @@ createdAt:new Date()
 
 
 
-window.location.href =
+window.location.href=
 
-"message.html?id=" + chat.id +
-"&receiverId=" + sellerId;
-
+"message.html?id="+chat.id+
+"&receiverId="+sellerId;
 
 
 }
@@ -430,36 +406,28 @@ window.location.href =
 window.filterPosts=function(){
 
 
-
 let text =
-
-document.getElementById("search")
-.value
-.toLowerCase();
+document.getElementById("search").value.toLowerCase();
 
 
 
 let category =
-
-document.getElementById("category")
-.value;
+document.getElementById("category").value;
 
 
 
 let region =
-
-document.getElementById("region")
-.value;
+document.getElementById("region").value;
 
 
 
-
-let result = allPosts.filter(post=>{
+let result =
+allPosts.filter(post=>{
 
 
 return (
 
-(post.title || "")
+(post.title||"")
 .toLowerCase()
 .includes(text)
 
@@ -477,7 +445,6 @@ return (
 });
 
 
-
 displayPosts(result);
 
 
@@ -491,9 +458,7 @@ displayPosts(result);
 loadPosts();
 
 
-
 </script>
-
 
 
 </body>

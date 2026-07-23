@@ -1,11 +1,13 @@
 {
   "name": "Ghana Connect",
   "short_name": "Ghana Connect",
+  "description": "Connecting Ghanaians to opportunities and solutions",
   "start_url": "/Ghana-Connect-/index.html",
+  "scope": "/Ghana-Connect-/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#00843D",
   "theme_color": "#FCD116",
-  "description": "Connecting Ghanaians to opportunities and solutions",
   "icons": [
     {
       "src": "/Ghana-Connect-/logo.png",
@@ -13,6 +15,5 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ],
-  "id": "ghana-connect"
+  ]
 }

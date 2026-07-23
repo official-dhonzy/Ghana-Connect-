@@ -16,3 +16,18 @@ alert(
 );
 
 }
+// Android back button support
+window.addEventListener("popstate", function () {
+  if (window.history.length > 1) {
+    history.back();
+  }
+});
+
+// Create browser history when moving pages
+function goBack() {
+  if (history.length > 1) {
+    history.back();
+  } else {
+    window.location.href = "index.html";
+  }
+}

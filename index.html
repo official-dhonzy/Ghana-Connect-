@@ -31,7 +31,6 @@ Connecting Ghanaians to opportunities and solutions
 
 <div class="account-buttons">
 
-
 <a href="register.html">
 <button>
 Create Account
@@ -45,14 +44,12 @@ Login
 </button>
 </a>
 
-
 </div>
 
 
 
 
 <div class="search-box">
-
 
 <input 
 id="search"
@@ -61,14 +58,10 @@ placeholder="Search jobs, services, houses..."
 
 
 <button onclick="search()">
-
 🔍
-
 </button>
 
-
 </div>
-
 
 
 
@@ -76,9 +69,7 @@ placeholder="Search jobs, services, houses..."
 <h2>Explore</h2>
 
 
-
 <div class="container">
-
 
 
 <div class="card" onclick="go('posts.html')">
@@ -90,7 +81,6 @@ placeholder="Search jobs, services, houses..."
 <p>Find work and opportunities</p>
 
 </div>
-
 
 
 
@@ -106,7 +96,6 @@ placeholder="Search jobs, services, houses..."
 
 
 
-
 <div class="card" onclick="go('posts.html')">
 
 🏠
@@ -116,7 +105,6 @@ placeholder="Search jobs, services, houses..."
 <p>Find rooms and houses</p>
 
 </div>
-
 
 
 
@@ -132,7 +120,6 @@ placeholder="Search jobs, services, houses..."
 
 
 
-
 <div class="card" onclick="go('posts.html')">
 
 📚
@@ -142,7 +129,6 @@ placeholder="Search jobs, services, houses..."
 <p>Learn and study</p>
 
 </div>
-
 
 
 
@@ -157,9 +143,7 @@ placeholder="Search jobs, services, houses..."
 </div>
 
 
-
 </div>
-
 
 
 
@@ -208,10 +192,7 @@ Verify Business
 
 
 
-
-
 <nav>
-
 
 <button onclick="go('index.html')">
 🏠 Home
@@ -232,7 +213,6 @@ Verify Business
 👤 Profile
 </button>
 
-
 </nav>
 
 
@@ -241,7 +221,6 @@ Verify Business
 
 
 <script>
-
 
 function go(page){
 
@@ -253,18 +232,30 @@ window.location.href = page;
 
 function search(){
 
-let text =
-document.getElementById("search").value;
+let text = document.getElementById("search").value;
 
 
 if(text){
 
-window.location.href =
-"posts.html?search=" + text;
+window.location.href = "posts.html?search=" + text;
 
 }
 
 }
+
+</script>
+
+
+
+
+
+<script type="module">
+
+import { enableNotifications } from "./notifications.js";
+
+enableNotifications();
+
+</script>
 
 
 
@@ -272,20 +263,27 @@ window.location.href =
 
 <script>
 
+if ("serviceWorker" in navigator) {
 
-if("serviceWorker" in navigator){
+navigator.serviceWorker.register("/Ghana-Connect-/sw.js")
+
+.then(() => {
+
+console.log("Ghana Connect Service Worker Installed");
+
+})
+
+.catch((error) => {
+
+console.log("Service Worker Error:", error);
+
+});
+
+}
+
+</script>
 
 
-navigator.serviceWorker.register(
-"service-worker.js"
-);
-
-
-
-
-
-<script
-  
 </body>
 
 </html>

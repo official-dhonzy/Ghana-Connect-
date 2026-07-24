@@ -1,14 +1,15 @@
 // Ghana Connect - Main Application Logic
 // ========================================
 
-// Initialize Firebase (add your config from Firebase console)
+// Initialize Firebase (YOUR CONFIG)
 const firebaseConfig = {
-    apiKey: "AIzaSyDemoKey", // REPLACE WITH YOUR FIREBASE CONFIG
-    authDomain: "ghana-connect.firebaseapp.com",
-    projectId: "ghana-connect",
-    storageBucket: "ghana-connect.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcd1234efgh5678"
+  apiKey: "AIzaSyC2oA_nKUvGTf5dEvTvotJw1zaige",
+  authDomain: "ghana-connect-fc3e2.firebaseapp.com",
+  projectId: "ghana-connect-fc3e2",
+  storageBucket: "ghana-connect-fc3e2.firebasestorage.app",
+  messagingSenderId: "835108806293",
+  appId: "1:835108806293:web:7f5ee41e10b4272af4c59c",
+  measurementId: "G-XRVBJQ52XP"
 };
 
 // Initialize Firebase
@@ -599,4 +600,4 @@ window.GhanaConnect = {
 };
 
 console.log("Ghana Connect App Initialized");
-      
+    

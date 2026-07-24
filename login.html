@@ -1,107 +1,266 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Ghana Connect</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
 
-<title>Ghana Connect Login</title>
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem;
+        }
 
-<link rel="stylesheet" href="style.css">
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #dc2626;
+            margin-bottom: 0.5rem;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #dc2626;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 1rem;
+        }
+
+        .forgot-password a {
+            color: #dc2626;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .footer a {
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .demo-notice {
+            background: #fef08a;
+            border: 2px solid #fbbf24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #92400e;
+        }
+    </style>
 </head>
-
-
 <body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🇬🇭 Ghana Connect</div>
+            <div class="title">Sign In</div>
+            <div class="subtitle">Access your account</div>
+        </div>
 
+        <div class="demo-notice">
+            💡 <strong>Demo Mode:</strong> Use any email/password to test. Data resets on refresh.
+        </div>
 
-<header>
-<h1>🇬🇭 Ghana Connect</h1>
-<p>Login to your account</p>
-</header>
+        <div class="error" id="errorMessage"></div>
 
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email">
+            </div>
 
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password" autocomplete="current-password">
+            </div>
 
-<div class="form">
+            <button type="submit" class="btn-submit" id="submitBtn">Sign In</button>
 
-<input id="email" placeholder="Email">
+            <div class="forgot-password">
+                <a href="#">Forgot password?</a>
+            </div>
+        </form>
 
-<input id="password" type="password" placeholder="Password">
+        <div class="footer">
+            Don't have an account? <a href="register.html">Create one</a>
+        </div>
+    </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+    <script src="app.js"></script>
 
-<button onclick="login()">
-Login
-</button>
+    <script>
+        const form = document.getElementById('loginForm');
+        const errorDiv = document.getElementById('errorMessage');
+        const submitBtn = document.getElementById('submitBtn');
 
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-<p id="message"></p>
+            errorDiv.classList.remove('show');
 
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
 
-</div>
+            if (!email || !password) {
+                showError('Please enter email and password');
+                return;
+            }
 
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Signing in...';
 
+            const result = await window.GhanaConnect.loginUser(email, password);
 
-<script type="module">
+            if (result.success) {
+                // Redirect to posts page
+                setTimeout(() => {
+                    window.location.href = 'posts.html';
+                }, 1000);
+            } else {
+                submitBtn.classList.remove('loading');
+                submitBtn.textContent = 'Sign In';
 
-import { auth } from "./firebase.js";
+                if (result.error.includes('user-not-found')) {
+                    showError('No account found with this email. Create one!');
+                } else if (result.error.includes('wrong-password')) {
+                    showError('Incorrect password. Try again.');
+                } else if (result.error.includes('invalid-email')) {
+                    showError('Please enter a valid email address');
+                } else {
+                    showError(result.error || 'Login failed. Please try again.');
+                }
+            }
+        });
 
-
-import {
-signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-
-
-
-window.login = async function(){
-
-
-let email =
-document.getElementById("email").value;
-
-
-let password =
-document.getElementById("password").value;
-
-
-
-try{
-
-
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-
-
-document.getElementById("message").innerHTML =
-"Login successful ✅";
-
-
-window.location.href="index.html";
-
-
-}
-
-
-catch(error){
-
-
-document.getElementById("message").innerHTML =
-error.message;
-
-
-}
-
-
-
-}
-
-
-</script>
-
-
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+    </script>
 </body>
-
 </html>

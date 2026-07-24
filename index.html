@@ -1,289 +1,575 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghana Connect - Your Local Opportunity Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: #f7fafc;
+        }
 
-<title>Ghana Connect</title>
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-<link rel="stylesheet" href="style.css">
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #dc2626;
+            letter-spacing: -1px;
+        }
 
-<link rel="manifest" href="manifest.json">
+        .logo-accent {
+            color: #f59e0b;
+        }
 
+        nav a {
+            color: #2d3748;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 1.5rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #dc2626;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-login {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #dc2626;
+            color: #dc2626;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            background: #fef2f2;
+        }
+
+        .btn-signup {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: white;
+            padding: 6rem 5%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(220, 38, 38, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-flag {
+            font-size: 1em;
+            margin-right: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #991b1b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            background: white;
+            color: #dc2626;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #f3f4f6;
+            transform: translateY(-3px);
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: #1a202c;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            border-radius: 12px;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            border-color: #dc2626;
+            background: white;
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #1a202c;
+        }
+
+        .feature-card p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item h4 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Regions Section */
+        .regions {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .regions-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .region-tag {
+            padding: 1rem;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .region-tag:hover {
+            background: #dc2626;
+            color: white;
+            border-color: #dc2626;
+            transform: scale(1.05);
+        }
+
+        /* Social Proof */
+        .testimonials {
+            padding: 5rem 5%;
+            background: #f7fafc;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid #dc2626;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .testimonial-stars {
+            color: #f59e0b;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .testimonial-text {
+            margin-bottom: 1rem;
+            color: #4a5568;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .testimonial-role {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a202c;
+            color: #a0aec0;
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        footer a {
+            color: #f59e0b;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .cta h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
-
-
 <body>
-
-
-<header>
-
-<h1>🇬🇭 Ghana Connect</h1>
-
-<p>
-Connecting Ghanaians to opportunities and solutions
-</p>
-
-</header>
-
-
-
-<div class="account-buttons">
-
-<a href="register.html">
-<button>
-Create Account
-</button>
-</a>
-
-
-<a href="login.html">
-<button>
-Login
-</button>
-</a>
-
-</div>
-
-
-
-
-<div class="search-box">
-
-<input 
-id="search"
-placeholder="Search jobs, services, houses..."
->
-
-
-<button onclick="search()">
-🔍
-</button>
-
-</div>
-
-
-
-
-<h2>Explore</h2>
-
-
-<div class="container">
-
-
-<div class="card" onclick="go('posts.html')">
-
-💼
-
-<h3>Jobs</h3>
-
-<p>Find work and opportunities</p>
-
-</div>
-
-
-
-<div class="card" onclick="go('posts.html')">
-
-🔧
-
-<h3>Services</h3>
-
-<p>Find trusted workers</p>
-
-</div>
-
-
-
-<div class="card" onclick="go('posts.html')">
-
-🏠
-
-<h3>Housing</h3>
-
-<p>Find rooms and houses</p>
-
-</div>
-
-
-
-<div class="card" onclick="go('posts.html')">
-
-🌱
-
-<h3>Farming</h3>
-
-<p>Connect farmers and buyers</p>
-
-</div>
-
-
-
-<div class="card" onclick="go('posts.html')">
-
-📚
-
-<h3>Education</h3>
-
-<p>Learn and study</p>
-
-</div>
-
-
-
-<div class="card" onclick="go('posts.html')">
-
-🛒
-
-<h3>Marketplace</h3>
-
-<p>Buy and sell</p>
-
-</div>
-
-
-</div>
-
-
-
-
-<h2>🇬🇭 Ghana Regions</h2>
-
-
-<div class="card">
-
-<p>
-Greater Accra • Ashanti • Volta • Eastern • Central
-</p>
-
-<p>
-Western • Northern • Bono • Oti • Upper East • Upper West
-</p>
-
-</div>
-
-
-
-
-
-<h2>⭐ Featured Businesses</h2>
-
-
-<div class="card">
-
-<p>
-Verified and promoted businesses will appear here.
-</p>
-
-
-<a href="verify.html">
-
-<button>
-Verify Business
-</button>
-
-</a>
-
-
-</div>
-
-
-
-
-
-<nav>
-
-<button onclick="go('index.html')">
-🏠 Home
-</button>
-
-
-<button onclick="go('post.html')">
-➕ Post
-</button>
-
-
-<button onclick="go('chat.html')">
-💬 Messages
-</button>
-
-
-<button onclick="go('profile.html')">
-👤 Profile
-</button>
-
-</nav>
-
-
-
-
-
-
-<script>
-
-function go(page){
-
-window.location.href = page;
-
-}
-
-
-
-function search(){
-
-let text = document.getElementById("search").value;
-
-
-if(text){
-
-window.location.href = "posts.html?search=" + text;
-
-}
-
-}
-
-</script>
-
-
-
-
-
-<script type="module">
-
-import { enableNotifications } from "./notifications.js";
-
-enableNotifications();
-
-</script>
-
-
-
-
-
-<script>
-
-if ("serviceWorker" in navigator) {
-
-navigator.serviceWorker.register("/Ghana-Connect-/sw.js")
-
-.then(() => {
-
-console.log("Ghana Connect Service Worker Installed");
-
-})
-
-.catch((error) => {
-
-console.log("Service Worker Error:", error);
-
-});
-
-}
-
-</script>
-
-
+    <!-- Navigation -->
+    <nav>
+        <div class="logo"><span class="hero-flag">🇬🇭</span>Ghana<span class="logo-accent">Connect</span></div>
+        <div style="display: flex; gap: 2rem;">
+            <a href="#features">Features</a>
+            <a href="#regions">Regions</a>
+            <a href="#testimonials">Reviews</a>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn-login" onclick="window.location.href='login.html'">Login</button>
+            <button class="btn-signup" onclick="window.location.href='register.html'">Sign Up</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Your Local Opportunity Hub</h1>
+            <p>Find jobs, housing, services, farming connections, education, and marketplace deals—all in one platform built for Ghanaians, by Ghanaians.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="window.location.href='register.html'">Get Started Free</button>
+                <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore Features</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">What You Can Do</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <h3>Find Jobs</h3>
+                <p>Browse and apply to employment opportunities across Ghana</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏠</div>
+                <h3>Find Housing</h3>
+                <p>Discover rooms, apartments, and houses in your preferred area</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Get Services</h3>
+                <p>Find trusted plumbers, electricians, cleaners, and more</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌱</div>
+                <h3>Connect Farmers</h3>
+                <p>Link buyers directly with agricultural producers</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>Learn & Study</h3>
+                <p>Access educational resources and tutoring services</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛒</div>
+                <h3>Buy & Sell</h3>
+                <p>Post and browse items for sale in your community</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>Direct Messaging</h3>
+                <p>Connect securely with buyers, sellers, and service providers</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>Verified Profiles</h3>
+                <p>Trust verified businesses and legitimate traders</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Works Offline</h3>
+                <p>Access Ghana Connect even with spotty internet connection</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4>16</h4>
+                <p>Regions Covered</p>
+            </div>
+            <div class="stat-item">
+                <h4>6+</h4>
+                <p>Categories</p>
+            </div>
+            <div class="stat-item">
+                <h4>100%</h4>
+                <p>Free to Use</p>
+            </div>
+            <div class="stat-item">
+                <h4>🚀</h4>
+                <p>Launching Now</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regions Section -->
+    <section class="regions" id="regions">
+        <h2 class="section-title">Available in All Ghana Regions</h2>
+        <div class="regions-list">
+            <div class="region-tag">Greater Accra</div>
+            <div class="region-tag">Ashanti</div>
+            <div class="region-tag">Volta</div>
+            <div class="region-tag">Eastern</div>
+            <div class="region-tag">Central</div>
+            <div class="region-tag">Western</div>
+            <div class="region-tag">Northern</div>
+            <div class="region-tag">Bono</div>
+            <div class="region-tag">Oti</div>
+            <div class="region-tag">Upper East</div>
+            <div class="region-tag">Upper West</div>
+            <div class="region-tag">Ahafo</div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <h2 class="section-title">Early Adopters Love It</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">"Ghana Connect helped me find a reliable electrician in Tema within hours. Quality work, fair price, and verified!"</div>
+                <div class="testimonial-author">Ama Kofi</div>
+                <div class="testimonial-role">Accra, Greater Accra</div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">"As a farmer, this platform connects me directly to buyers. No middlemen, better prices. Game changer for my business."</div>
+                <div class="testimonial-author">Kwesi Mensah</div>
+                <div class="testimonial-role">Ashanti Region</div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">"Found my apartment through Ghana Connect in Kumasi. Easy to search by region, transparent listings, and works offline!"</div>
+                <div class="testimonial-author">Naa Adjoa</div>
+                <div class="testimonial-role">Kumasi, Ashanti</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2>Ready to Connect?</h2>
+        <p>Join thousands of Ghanaians finding opportunities and solutions</p>
+        <button class="btn-primary" onclick="window.location.href='register.html'">Create Free Account Now</button>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Ghana Connect. All rights reserved.</p>
+        <p>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Contact</a>
+            <a href="verify.html">Verify Business</a>
+        </p>
+    </footer>
 </body>
-
 </html>
